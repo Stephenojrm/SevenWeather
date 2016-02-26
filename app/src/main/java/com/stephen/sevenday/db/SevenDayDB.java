@@ -31,19 +31,18 @@ public class SevenDayDB {
 
     /**
      * 将构造方法私有化
-     *
      */
-    private SevenDayDB(Context context){
-        SevenWeatherOpenHelper dbHelper = new SevenWeatherOpenHelper(context,DB_NAME,null,1);
+    private SevenDayDB(Context context) {
+        SevenWeatherOpenHelper dbHelper = new SevenWeatherOpenHelper(context, DB_NAME, null, 1);
         db = dbHelper.getWritableDatabase();
     }
 
     /**
      * 获取SevenDayDB实例
      */
-    public synchronized static SevenDayDB getInstance(Context context){
-        if(sevenDayDB==null){
-            sevenDayDB=new SevenDayDB(context);
+    public synchronized static SevenDayDB getInstance(Context context) {
+        if (sevenDayDB == null) {
+            sevenDayDB = new SevenDayDB(context);
         }
         return sevenDayDB;
     }
@@ -51,22 +50,60 @@ public class SevenDayDB {
     /**
      * 将Position实例存储到数据库
      */
-    public void savePosition(Position position){
-        if(position!=null){
+    public void savePosition(Position position) {
+        if (position != null) {
             ContentValues values = new ContentValues();
-            values.put("province_name",position.getProvinceName());
-            values.put("city_name",position.getCityName());
-            values.put("district_name",position.getDistrictName());
-            db.insert("Position",null,values);
+            values.put("province_name", position.getProvinceName());
+            values.put("city_name", position.getCityName());
+            values.put("district_name", position.getDistrictName());
+            db.insert("Position", null, values);
         }
     }
 
     /**
      * 从数据库中读取全国所有省份信息
      */
-    public List<String> loadProvices(){
+    public List<String> loadProvices() {
         List<String> list = new ArrayList<>();
-        db.rawQuery()
+        Cursor cursor = db.rawQuery("select distinct province_name from Position", null);
+        if (cursor.moveToFirst()) {
+            do {
+                String province_name = cursor.getString(0);
+                list.add(province_name);
+            } while (cursor.moveToNext());
+        }
+        return list;
     }
+
+    /**
+     * 从数据库中读取省份下的城市
+     */
+    public List<String> loadCities(String provinceName) {
+        List<String> list = new ArrayList<>();
+        Cursor cursor = db.rawQuery("select distinct city_name from Position where province_name = ?", new String[]{provinceName});
+        if (cursor.moveToFirst()) {
+            do {
+                String city_name = cursor.getString(0);
+                list.add(city_name);
+            } while (cursor.moveToNext());
+        }
+        return list;
+    }
+
+    /**
+     * 从数据库中读取城市下的县
+     */
+    public List<String> loadDistricts(String cityName) {
+        List<String> list = new ArrayList<>();
+        Cursor cursor = db.rawQuery("select distinct district_name from Position where city_name = ?", new String[]{cityName});
+        if (cursor.moveToFirst()) {
+            do {
+                String district_name = cursor.getString(0);
+                list.add(district_name);
+            } while (cursor.moveToNext());
+        }
+        return list;
+    }
+
 
 }
