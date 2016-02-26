@@ -27,13 +27,13 @@ public class SevenDayDB {
 
     private static SevenDayDB sevenDayDB;
 
-    private SQLiteDatabase db;
+    private static SQLiteDatabase db;
 
     /**
      * 将构造方法私有化
      */
     private SevenDayDB(Context context) {
-        SevenWeatherOpenHelper dbHelper = new SevenWeatherOpenHelper(context, DB_NAME, null, 1);
+        SevenWeatherOpenHelper dbHelper = new SevenWeatherOpenHelper(context, DB_NAME, null, VERSION);
         db = dbHelper.getWritableDatabase();
     }
 
@@ -63,7 +63,7 @@ public class SevenDayDB {
     /**
      * 从数据库中读取全国所有省份信息
      */
-    public List<String> loadProvices() {
+    public static List<String> loadProvinces() {
         List<String> list = new ArrayList<>();
         Cursor cursor = db.rawQuery("select distinct province_name from Position", null);
         if (cursor.moveToFirst()) {
@@ -78,7 +78,7 @@ public class SevenDayDB {
     /**
      * 从数据库中读取省份下的城市
      */
-    public List<String> loadCities(String provinceName) {
+    public static List<String> loadCities(String provinceName) {
         List<String> list = new ArrayList<>();
         Cursor cursor = db.rawQuery("select distinct city_name from Position where province_name = ?", new String[]{provinceName});
         if (cursor.moveToFirst()) {
@@ -93,7 +93,7 @@ public class SevenDayDB {
     /**
      * 从数据库中读取城市下的县
      */
-    public List<String> loadDistricts(String cityName) {
+    public static List<String> loadDistricts(String cityName) {
         List<String> list = new ArrayList<>();
         Cursor cursor = db.rawQuery("select distinct district_name from Position where city_name = ?", new String[]{cityName});
         if (cursor.moveToFirst()) {
