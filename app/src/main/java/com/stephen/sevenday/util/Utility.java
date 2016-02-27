@@ -6,7 +6,6 @@ import com.stephen.sevenday.db.SevenDayDB;
 import com.stephen.sevenday.model.Position;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -19,10 +18,11 @@ public class Utility {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 JSONArray array = jsonObject.getJSONArray("result");
-                if(array.length()>0 && array!=null){
+                if (array.length() > 0 && array != null) {
                     Position position = new Position();
-                    for(int i=0;i<array.length();i++){
-                        JSONObject json = array.getJSONObject(i);
+                    for (int i = 0; i < array.length(); i++) {
+                        JSONObject json;
+                        json = array.getJSONObject(i);
                         String provinceName = json.getString("province");
                         String cityName = json.getString("city");
                         String district_name = json.getString("district");
@@ -33,10 +33,20 @@ public class Utility {
                         sevenDayDB.savePosition(position);
                     }
                 }
-            } catch (JSONException e) {
+//                ObjectMapper mapper = new ObjectMapper();
+//                mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+//                mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
+//                ArrayList<Position> list = mapper.readValue(array.toString(),new ArrayList<Position>(){}.getClass());
+//                for(Position position : list){
+//                    sevenDayDB.savePosition(position);
+//                }
+            }catch (Exception e){
                 e.printStackTrace();
             }
         }
         return true;
     }
+
+
+
 }

@@ -17,10 +17,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    packagingOptions{
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
+    compile files('D:/Users/gritor/Documents/AS_Workspace/7DAY/libs/jackson-annotations-2.5.1.jar')
+    compile files('D:/Users/gritor/Documents/AS_Workspace/7DAY/libs/jackson-core-2.5.1.jar')
+    compile files('D:/Users/gritor/Documents/AS_Workspace/7DAY/libs/jackson-databind-2.5.1.jar')
 }

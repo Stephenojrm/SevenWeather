@@ -26,8 +26,8 @@ public class MainActivity extends Activity {
 
     private String selectedProvince;
     private String selectedCity;
-    private String lastSelected;
 
+    private String lastSelected;
     private int currentLevel;
 
     private SevenDayDB sevenDayDB;
@@ -47,6 +47,7 @@ public class MainActivity extends Activity {
         listView = (ListView) findViewById(R.id.list_view);
         textView = (TextView) findViewById(R.id.title);
         dataList=new ArrayList<>();
+        progressDialog = new ProgressDialog(this);
         sevenDayDB = SevenDayDB.getInstance(this);
         adapter=new ArrayAdapter(this, android.R.layout.simple_list_item_1,dataList);
         listView.setAdapter(adapter);
@@ -55,6 +56,7 @@ public class MainActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (currentLevel == LEVEL_PROVINCE) {
                     selectedProvince = provinceList.get(position);
+                    lastSelected = selectedProvince;
                     queryCities(selectedProvince);
                 } else if (currentLevel == LEVEL_CITY) {
                     selectedCity = cityList.get(position);
@@ -79,6 +81,7 @@ public class MainActivity extends Activity {
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
             textView.setText("中国");
+            currentLevel = LEVEL_PROVINCE;
         }else{
             //请求网络数据
             queryFromServer("province");
@@ -98,6 +101,7 @@ public class MainActivity extends Activity {
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
             textView.setText(selectedProvince);
+            currentLevel = LEVEL_CITY;
         }else{
             //请求网络数据
             queryFromServer(selectedProvince);
@@ -117,6 +121,7 @@ public class MainActivity extends Activity {
             adapter.notifyDataSetChanged();
             listView.setSelection(0);
             textView.setText(selectedCity);
+            currentLevel = LEVEL_DISTRICT;
         }else{
             //请求网络数据
             queryFromServer(selectedCity);
@@ -139,7 +144,8 @@ public class MainActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            closeProgressDialog();
+//                            closeProgressDialog();
+                            progressDialog.dismiss();
                             if("province".equals(type)){
                                 queryProvince();
                             }else if("selectedProvince".equals(type)){
@@ -157,7 +163,8 @@ public class MainActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        closeProgressDialog();
+//                        closeProgressDialog();
+                        progressDialog.dismiss();
                         Toast.makeText(MainActivity.this,"加载失败",Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -169,23 +176,21 @@ public class MainActivity extends Activity {
      * 显示进度对话框
      */
     private void showProgressDialog(){
-        if(progressDialog==null){
-            progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("正在加载。。。");
+        if(progressDialog!=null){
+            progressDialog.setMessage("第一次加载时间较长。。。");
             progressDialog.setCanceledOnTouchOutside(false);
         }
         progressDialog.show();
     }
 
     /**
-     * 关闭进度对话框
+     * 关闭进度对话框??????此方法调用失败
      */
-    private void closeProgressDialog(){}{
-        if(progressDialog!=null){
-            System.out.println("diao yong!!");
-            progressDialog.dismiss();
-        }
-    }
+//    private void closeProgressDialog(){}{
+//        if(progressDialog!=null){
+//            progressDialog.dismiss();
+//        }
+//    }
 
     /**
      * 捕获Back按键，根据当前的级别来判断，应该返回哪一个列表，或是直接退出

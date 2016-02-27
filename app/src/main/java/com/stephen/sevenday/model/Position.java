@@ -4,32 +4,41 @@ package com.stephen.sevenday.model;
  * Created by gritor on 2016/2/24.
  */
 public class Position {
-    private String provinceName;
-    private String cityName;
-    private String districtName;
+    private String province;
+    private String city;
+    private String district;
+    private Integer id;
 
 
     public String getProvinceName() {
-        return provinceName;
+        return province;
     }
 
     public void setProvinceName(String provinceName) {
-        this.provinceName = provinceName;
+        this.province = provinceName;
     }
 
     public String getCityName() {
-        return cityName;
+        return city;
     }
 
     public void setCityName(String cityName) {
-        this.cityName = cityName;
+        this.city = cityName;
     }
 
     public String getDistrictName() {
-        return districtName;
+        return district;
     }
 
     public void setDistrictName(String districtName) {
-        this.districtName = districtName;
+        this.district = districtName;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }
