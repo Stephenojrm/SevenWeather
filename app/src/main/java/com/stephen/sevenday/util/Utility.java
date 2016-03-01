@@ -1,11 +1,15 @@
 package com.stephen.sevenday.util;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 
 import com.stephen.sevenday.db.SevenDayDB;
 import com.stephen.sevenday.model.Position;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -13,12 +17,12 @@ import org.json.JSONObject;
  * 服务器返回的数据是JSON格式，此类用于JSON格式的解析和处理
  */
 public class Utility {
-    public synchronized static boolean handlePosition(SevenDayDB sevenDayDB,String response){
-        if(!TextUtils.isEmpty(response)){
+    public synchronized static boolean handlePosition(SevenDayDB sevenDayDB, String response) {
+        if (!TextUtils.isEmpty(response)) {
             try {
                 JSONObject jsonObject = new JSONObject(response);
                 JSONArray array = jsonObject.getJSONArray("result");
-                if (array.length() > 0 && array != null) {
+                if (array != null && array.length() > 0) {
                     Position position = new Position();
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject json;
@@ -40,13 +44,38 @@ public class Utility {
 //                for(Position position : list){
 //                    sevenDayDB.savePosition(position);
 //                }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return true;
     }
 
+    /**
+     * 处理服务器返回发的天气数据，并存入到SharedPreference中
+     */
+    public static boolean handleWeather(Context context, String response) {
+        try {
+            JSONObject jsonObject = new JSONObject(response);
+            JSONArray jsonArray = jsonObject.getJSONArray("result");
+            JSONObject sk = jsonArray.getJSONObject(0);
+            JSONObject today = jsonArray.getJSONObject(1);
+            String date = today.getString("date_y");
+            String weather = today.getString("weather");
+            String temp = today.getString("temperature");
+            String publishTime = sk.getString("time");
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+            editor.putString("date", date);
+            editor.putString("weather", weather);
+            editor.putString("temp", temp);
+            editor.putString("publishTime", publishTime);
+            editor.commit();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return true;
+
+    }
 
 
 }
