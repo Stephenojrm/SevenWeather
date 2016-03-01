@@ -7,7 +7,6 @@ public class Position {
     private String province;
     private String city;
     private String district;
-    private Integer id;
 
 
     public String getProvinceName() {
@@ -34,11 +33,5 @@ public class Position {
         this.district = districtName;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
-    public Integer getId() {
-        return id;
-    }
 }
