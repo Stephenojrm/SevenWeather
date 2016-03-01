@@ -57,14 +57,15 @@ public class Utility {
     public static boolean handleWeather(Context context, String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
-            JSONArray jsonArray = jsonObject.getJSONArray("result");
-            JSONObject sk = jsonArray.getJSONObject(0);
-            JSONObject today = jsonArray.getJSONObject(1);
+            JSONObject result = jsonObject.getJSONObject("result");
+            JSONObject sk = result.getJSONObject("sk");
+            JSONObject today = result.getJSONObject("today");
             String date = today.getString("date_y");
             String weather = today.getString("weather");
             String temp = today.getString("temperature");
             String publishTime = sk.getString("time");
             SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(context).edit();
+            editor.putBoolean("isFirstCome",true);
             editor.putString("date", date);
             editor.putString("weather", weather);
             editor.putString("temp", temp);

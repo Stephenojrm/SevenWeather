@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -11,9 +12,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.stephen.sevenday.MyApplication;
 import com.stephen.sevenday.R;
 import com.stephen.sevenday.db.SevenDayDB;
 import com.stephen.sevenday.util.HttpUtil;
+import com.stephen.sevenday.util.LogUtil;
 import com.stephen.sevenday.util.Utility;
 
 import java.util.ArrayList;
@@ -43,10 +46,16 @@ public class MainActivity extends Activity {
     private List<String> cityList;
     private List<String> districtList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if(PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).getBoolean("isFirstCome",false)) {
+            Intent toWeatherAty = new Intent(this, WeatherActivity.class);
+            startActivity(toWeatherAty);
+            finish();
+        }
         listView = (ListView) findViewById(R.id.list_view);
         textView = (TextView) findViewById(R.id.title);
         dataList = new ArrayList<>();
@@ -66,8 +75,12 @@ public class MainActivity extends Activity {
                     queryDistricts(selectedCity);
                 } else if (currentLevel == LEVEL_DISTRICT) {
                     Intent intent = new Intent(MainActivity.this,WeatherActivity.class);
+                    selectDistrict = districtList.get(position);
+                    PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit().putString("selectDistrict",selectDistrict).commit();
                     intent.putExtra("selectDistrict", selectDistrict);
+                    LogUtil.i("Main",selectDistrict);
                     startActivity(intent);
+                    finish();
                 }
             }
         });
