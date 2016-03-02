@@ -11,6 +11,14 @@
         android:layout_height="55dp"
         android:background="#484E61">
 
+        <Button
+            android:id="@+id/homeBtn"
+            android:layout_width="35dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/home_sel" />
+
         <TextView
             android:id="@+id/districtText"
             android:layout_width="wrap_content"
@@ -18,6 +26,7 @@
             android:layout_centerInParent="true"
             android:textColor="#FFF"
             android:textSize="24sp" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -27,13 +36,14 @@
         android:background="#27A5F9">
 
         <TextView
+            android:id="@+id/publishTime"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:id="@+id/publishTime"
             android:layout_alignParentRight="true"
             android:layout_marginRight="10dp"
             android:layout_marginTop="15dp"
             android:gravity="center"
+            android:textColor="@android:color/primary_text_dark"
             android:text="我是天气发布时间"
             android:textSize="19sp" />
 

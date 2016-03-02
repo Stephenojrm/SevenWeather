@@ -2,6 +2,7 @@ package com.stephen.sevenday.activity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +47,8 @@ public class WeatherActivity extends Activity {
      */
     private TextView temp;
 
+    private Button homeBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +59,18 @@ public class WeatherActivity extends Activity {
         weather = (TextView) findViewById(R.id.weather);
         weatherInfo = (LinearLayout) findViewById(R.id.weatherInfo);
         temp = (TextView) findViewById(R.id.temp);
+        homeBtn = (Button) findViewById(R.id.homeBtn);
+
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toMain = new Intent(WeatherActivity.this,MainActivity.class);
+                toMain.putExtra("isFromWea",true);
+                startActivity(toMain);
+                WeatherActivity.this.finish();
+            }
+        });
+
         final String districtName = getIntent().getStringExtra("selectDistrict");
         if (!TextUtils.isEmpty(districtName)) {
             //获取当前的网络连接服务
@@ -120,4 +136,6 @@ public class WeatherActivity extends Activity {
     public void queryFromServer(String address, HttpUtil.HttpCallBackListener listener) {
         HttpUtil.sendHttpRequest(address, listener);
     }
+
+
 }

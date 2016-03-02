@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).getBoolean("isFirstCome",false)) {
+        if(PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).getBoolean("isFirstCome",false)&&!getIntent().getBooleanExtra("isFromWea",false)) {
             Intent toWeatherAty = new Intent(this, WeatherActivity.class);
             startActivity(toWeatherAty);
             finish();
