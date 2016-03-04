@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).getBoolean("isFirstCome",false)&&!getIntent().getBooleanExtra("isFromWea",false)) {
+        if (PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).getBoolean("isFirstCome", false) && !getIntent().getBooleanExtra("isFromWea", false)) {
             Intent toWeatherAty = new Intent(this, WeatherActivity.class);
             startActivity(toWeatherAty);
             finish();
@@ -74,11 +74,11 @@ public class MainActivity extends Activity {
                     selectedCity = cityList.get(position);
                     queryDistricts(selectedCity);
                 } else if (currentLevel == LEVEL_DISTRICT) {
-                    Intent intent = new Intent(MainActivity.this,WeatherActivity.class);
+                    Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
                     selectDistrict = districtList.get(position);
-                    PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit().putString("selectDistrict",selectDistrict).commit();
+//                    PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit().putString("selectDistrict", selectDistrict).commit();
                     intent.putExtra("selectDistrict", selectDistrict);
-                    LogUtil.i("Main",selectDistrict);
+                    LogUtil.i("Main", selectDistrict);
                     startActivity(intent);
                     finish();
                 }
