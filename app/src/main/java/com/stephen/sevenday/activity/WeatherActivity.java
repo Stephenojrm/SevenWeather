@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.stephen.sevenday.AutoSwipeRefreshLayout;
 import com.stephen.sevenday.MyApplication;
 import com.stephen.sevenday.R;
+import com.stephen.sevenday.service.AutoUpdateService;
 import com.stephen.sevenday.util.HttpUtil;
 import com.stephen.sevenday.util.Utility;
 
@@ -109,8 +110,9 @@ public class WeatherActivity extends Activity implements SwipeRefreshLayout.OnRe
         date.setText(sharedPreferences.getString("date", ""));
         weather.setText(sharedPreferences.getString("weather", ""));
         temp.setText(sharedPreferences.getString("temp", ""));
-//        weatherInfo.setVisibility(View.VISIBLE);
-//        district.setVisibility(View.VISIBLE);
+        //刷新UI后，直接开启自动更新服务
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 
     /**
