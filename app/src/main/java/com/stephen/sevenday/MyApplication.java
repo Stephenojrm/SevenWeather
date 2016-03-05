@@ -5,6 +5,8 @@ import android.content.Context;
 
 /**
  * Created by Stephen on 2016/3/1.
+ *
+ * 全局获取到context
  */
 public class MyApplication extends Application {
     private static  Context context;

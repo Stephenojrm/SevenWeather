@@ -4,6 +4,8 @@ import android.util.Log;
 
 /**
  * Created by Stephen on 2016/3/1.
+ *
+ * 打Log工具类
  */
 public class LogUtil {
     private static final int VERBOSE = 1;
@@ -12,7 +14,7 @@ public class LogUtil {
     private static final int WARN = 4;
     private static final int ERROR = 5;
     private static final int NOTHING = 6;
-    private static final int LEVEL = VERBOSE;
+    private static final int LEVEL = NOTHING;
 
 
     public static void v(String tag, String msg) {

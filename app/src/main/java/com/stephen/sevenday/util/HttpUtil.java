@@ -7,7 +7,9 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * Created by gritor on 2016/2/26.
+ * Created by stephen on 2016/2/26.
+ *
+ * 网络请求
  */
 public class HttpUtil {
 
@@ -22,6 +24,12 @@ public class HttpUtil {
     }
 
 
+    /**
+     * 发送Http请求
+     *
+     * @param address 请求地址
+     * @param listener  用于回调请求结果处理
+     */
     public static void sendHttpRequest(final String address, final HttpCallBackListener listener) {
         new Thread(new Runnable() {
             @Override
@@ -50,6 +58,9 @@ public class HttpUtil {
                     }
                     e.printStackTrace();
                 } finally {
+                    /*
+                     数据读取结束关掉连接
+                     */
                     if (connection != null) {
                         connection.disconnect();
                     }

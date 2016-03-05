@@ -13,10 +13,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by gritor on 2016/2/26.
- * 服务器返回的数据是JSON格式，此类用于JSON格式的解析和处理
+ * Created by stephen on 2016/2/26
  */
-public class Utility {
+public class Utility{
+    /**
+     * 对从服务器获取的Json数据进行解析，并存储到数据库中
+     *
+     * @param sevenDayDB 要存储数据的数据库
+     * @param response  服务器返回的Json数据
+     * @return
+     */
     public synchronized static boolean handlePosition(SevenDayDB sevenDayDB, String response) {
         if (!TextUtils.isEmpty(response)) {
             try {
@@ -33,17 +39,9 @@ public class Utility {
                         position.setProvinceName(provinceName);
                         position.setCityName(cityName);
                         position.setDistrictName(district_name);
-                        //将解析出的Position数据存入到数据库中
-                        sevenDayDB.savePosition(position);
+                        sevenDayDB.savePosition(position);//将解析出的Position数据存入到数据库中
                     }
                 }
-//                ObjectMapper mapper = new ObjectMapper();
-//                mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-//                mapper.setVisibilityChecker(VisibilityChecker.Std.defaultInstance().withFieldVisibility(JsonAutoDetect.Visibility.ANY));
-//                ArrayList<Position> list = mapper.readValue(array.toString(),new ArrayList<Position>(){}.getClass());
-//                for(Position position : list){
-//                    sevenDayDB.savePosition(position);
-//                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -52,7 +50,11 @@ public class Utility {
     }
 
     /**
-     * 处理服务器返回发的天气数据，并存入到SharedPreference中
+     * 处理服务器返回的天气json数据，并存储到SharedPreference中
+     *
+     * @param context
+     * @param response 服务器返回的json数据
+     * @return
      */
     public static boolean handleWeather(Context context, String response) {
         try {

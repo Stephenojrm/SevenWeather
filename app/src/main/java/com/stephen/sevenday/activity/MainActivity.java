@@ -41,7 +41,7 @@ public class MainActivity extends Activity {
     private TextView textView;
     private ProgressDialog progressDialog;
     private ArrayAdapter adapter;
-    private List<String> dataList;
+    private ArrayList<String> dataList;
     private List<String> provinceList;
     private List<String> cityList;
     private List<String> districtList;
@@ -61,7 +61,7 @@ public class MainActivity extends Activity {
         dataList = new ArrayList<>();
         progressDialog = new ProgressDialog(this);
         sevenDayDB = SevenDayDB.getInstance(this);
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, dataList);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, dataList);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -76,7 +76,6 @@ public class MainActivity extends Activity {
                 } else if (currentLevel == LEVEL_DISTRICT) {
                     Intent intent = new Intent(MainActivity.this, WeatherActivity.class);
                     selectDistrict = districtList.get(position);
-//                    PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit().putString("selectDistrict", selectDistrict).commit();
                     intent.putExtra("selectDistrict", selectDistrict);
                     LogUtil.i("Main", selectDistrict);
                     startActivity(intent);
@@ -164,7 +163,6 @@ public class MainActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-//                            closeProgressDialog();
                             progressDialog.dismiss();
                             if ("province".equals(type)) {
                                 queryProvince();
@@ -203,14 +201,6 @@ public class MainActivity extends Activity {
         progressDialog.show();
     }
 
-    /**
-     * 关闭进度对话框??????此方法调用失败
-     */
-//    private void closeProgressDialog(){}{
-//        if(progressDialog!=null){
-//            progressDialog.dismiss();
-//        }
-//    }
 
     /**
      * 捕获Back按键，根据当前的级别来判断，应该返回哪一个列表，或是直接退出
